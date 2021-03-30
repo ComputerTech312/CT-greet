@@ -1,0 +1,60 @@
+###################
+# CT-Greet.tcl
+###
+# Author: ComputerTech
+# Version: 0.1
+# Email: computertech312@gmail.com
+# Github: https://github.com/computertech312
+#
+###
+# Description:
+# A Simple greet script
+#
+###
+# Configuration:
+
+## Greet Message's
+# %nick  = $nick
+# %chan = $chan
+##
+set ctgreet(msg) {
+	"Hello %nick, Welcome to %chan"
+	"Welcome to %chan, %nick"
+	"Greetings %nick"
+}
+
+## Output method
+# 0 = Channel
+# 1 = Notice
+# 2 = Privmsg
+##
+set ctgreet(out) "0"
+
+## Exempt list
+set ctgreet(exempt) {
+	"nick1"
+	"nick2"
+	"nick3"
+}
+###################
+
+bind JOIN - * ct:greet
+
+proc ct:greet {nick host hand chan} {
+	global ctgreet
+	foreach enick $ctgreet(exempt) {}
+	set ramsg [rand $ctgreet(msg)]
+	if {$nick == $::botnick} {return
+		if {$nick == $enick} {return
+		}
+	}
+	switch -- $ctgreet(out) {
+		"0" {putserv "PRIVMSG $chan :$ramsg"
+		}
+		"1" {putserv "NOTICE $nick :$ramsg"
+		}
+		"2" {putserv "PRIVMSG $nick :$ramsg"
+		}
+	}
+}
+###################
