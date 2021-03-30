@@ -8,8 +8,9 @@
 #
 ###
 # Description:
-# A Simple greet script
-#
+# A Simple greet script.
+# .chanset #chat +ctgreet to enable 
+#  script per channel.
 ###
 # Configuration:
 
@@ -40,12 +41,15 @@ set ctgreet(exempt) {
 
 bind JOIN - * ct:greet
 
+setudef flag ctgreet
+
 proc ct:greet {nick host hand chan} {
 	global ctgreet
+     if {![channel get $chan ctgreet]} {return}
 	foreach enick $ctgreet(exempt) {}
 	set ramsg [rand $ctgreet(msg)]
-	if {$nick == $::botnick} {return
-		if {$nick == $enick} {return
+     if {$nick == $::botnick} {return
+     if {$nick == $enick} {return
 		}
 	}
 	switch -- $ctgreet(out) {
